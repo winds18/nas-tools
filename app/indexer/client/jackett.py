@@ -54,7 +54,7 @@ class Jackett(_IIndexClient):
             return False
         return True if self.get_indexers() else False
 
-    def get_indexers(self):
+    def get_indexers(self, check=True):
         """
         获取配置的jackett indexer
         :return: indexer 信息 [(indexerId, indexerName, url)]
@@ -62,7 +62,8 @@ class Jackett(_IIndexClient):
         # 获取Cookie
         cookie = None
         session = requests.session()
-        res = RequestUtils(session=session).post_res(url=f"{self._host}UI/Dashboard",params={"password": self._password})
+        res = RequestUtils(session=session).post_res(url=f"{self._host}UI/Dashboard",
+                                                     params={"password": self._password})
         if res and session.cookies:
             cookie = session.cookies.get_dict()
         indexer_query_url = f"{self._host}api/v2.0/indexers?configured=true"
