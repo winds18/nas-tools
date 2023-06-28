@@ -1,12 +1,12 @@
 ![logo-blue](https://user-images.githubusercontent.com/51039935/197520391-f35db354-6071-4c12-86ea-fc450f04bc85.png)
 # NAS媒体库管理工具
 
-[![GitHub stars](https://img.shields.io/github/stars/hsuyelin/nas-tools?style=plastic)](https://github.com/hsuyelin/nas-tools/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/hsuyelin/nas-tools?style=plastic)](https://github.com/hsuyelin/nas-tools/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/hsuyelin/nas-tools?style=plastic)](https://github.com/hsuyelin/nas-tools/issues)
-[![GitHub license](https://img.shields.io/github/license/hsuyelin/nas-tools?style=plastic)](https://github.com/hsuyelin/nas-tools/blob/master/LICENSE.md)
-[![Docker pulls](https://img.shields.io/docker/pulls/hsuyelin/nas-tools?style=plastic)](https://hub.docker.com/r/hsuyelin/nas-tools)
-[![Platform](https://img.shields.io/badge/platform-amd64/arm64-pink?style=plastic)](https://hub.docker.com/r/hsuyelin/nas-tools)
+[![GitHub stars](https://img.shields.io/github/stars/winds18/nas-tools?style=plastic)](https://github.com/winds18/nas-tools/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/winds18/nas-tools?style=plastic)](https://github.com/winds18/nas-tools/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/winds18/nas-tools?style=plastic)](https://github.com/winds18/nas-tools/issues)
+[![GitHub license](https://img.shields.io/github/license/winds18/nas-tools?style=plastic)](https://github.com/winds18/nas-tools/blob/master/LICENSE.md)
+[![Docker pulls](https://img.shields.io/docker/pulls/winds18/nas-tools?style=plastic)](https://hub.docker.com/r/winds18/nas-tools)
+[![Platform](https://img.shields.io/badge/platform-amd64/arm64-pink?style=plastic)](https://hub.docker.com/r/winds18/nas-tools)
 
 TG频道：https://t.me/nastool_official (官方)
 
@@ -21,16 +21,16 @@ NAS媒体库管理工具。
 ## 安装
 ### 1、Docker
 ```
-docker pull hsuyelin/nas-tools:latest
+docker pull winds18/nas-tools:latest
 ```
-教程见 [这里](https://raw.githubusercontent.com/hsuyelin/nas-tools/master/docker/readme.md) 。
+教程见 [这里](https://raw.githubusercontent.com/winds18/nas-tools/master/docker/readme.md) 。
 
 如无法连接Github，注意不要开启自动更新开关(NASTOOL_AUTO_UPDATE=false)，将NASTOOL_CN_UPDATE设置为true可使用国内源加速安装依赖。
 
 ### 2、本地运行
 仅支持python3.10版本，需要预安装cython（python3 -m pip install Cython），如发现缺少依赖包需额外安装：
 ```
-git clone -b master https://github.com/hsuyelin/nas-tools --recurse-submodule 
+git clone -b master https://github.com/winds18/nas-tools --recurse-submodule 
 python3 -m pip install -r requirements.txt
 export NASTOOL_CONFIG="/xxx/config/config.yaml"
 nohup python3 run.py & 
