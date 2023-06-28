@@ -9,42 +9,50 @@ from app.helper import IndexerConf
 
 
 class Jackett(_IIndexClient):
-    schema = "jackett"
+    # 索引器ID
+    client_id = "jackett"
+    # 索引器类型
+    client_type = IndexerType.JACKETT
+    # 索引器名称
+    client_name = IndexerType.JACKETT.value
+
+    # 私有属性
     _client_config = {}
-    index_type = IndexerType.JACKETT.value
     _password = None
+    _api_key = None
+    _host = None
 
     def __init__(self, config=None):
         super().__init__()
-        if config:
-            self._client_config = config
-        else:
-            self._client_config = Config().get_config('jackett')
+        self._client_config = config or Config().get_config('jackett')
         self.init_config()
 
     def init_config(self):
         if self._client_config:
-            self.api_key = self._client_config.get('api_key')
+            self._api_key = self._client_config.get('api_key')
             self._password = self._client_config.get('password')
-            self.host = self._client_config.get('host')
-            if self.host:
-                if not self.host.startswith('http'):
-                    self.host = "http://" + self.host
-                if not self.host.endswith('/'):
-                    self.host = self.host + "/"
+            self._host = self._client_config.get('host')
+
+            if not self._host.startswith('http'):
+                self._host = "http://" + self._host
+            if not self._host.endswith('/'):
+                self._host = self._host + "/"
+
+    @classmethod
+    def match(cls, ctype):
+        return True if ctype in [cls.client_id, cls.client_type, cls.client_name] else False
+
+    def get_type(self):
+        return self.client_type
 
     def get_status(self):
         """
         检查连通性
         :return: True、False
         """
-        if not self.api_key or not self.host:
+        if not self._api_key or not self._host:
             return False
         return True if self.get_indexers() else False
-
-    @classmethod
-    def match(cls, ctype):
-        return True if ctype in [cls.schema, cls.index_type] else False
 
     def get_indexers(self):
         """
@@ -54,18 +62,17 @@ class Jackett(_IIndexClient):
         # 获取Cookie
         cookie = None
         session = requests.session()
-        res = RequestUtils(session=session).post_res(url=f"{self.host}UI/Dashboard",
-                                                     params={"password": self._password})
+        res = RequestUtils(session=session).post_res(url=f"{self._host}UI/Dashboard",params={"password": self._password})
         if res and session.cookies:
             cookie = session.cookies.get_dict()
-        indexer_query_url = f"{self.host}api/v2.0/indexers?configured=true"
+        indexer_query_url = f"{self._host}api/v2.0/indexers?configured=true"
         try:
             ret = RequestUtils(cookies=cookie).get_res(indexer_query_url)
             if not ret or not ret.json():
                 return []
             return [IndexerConf({"id": v["id"],
                                  "name": v["name"],
-                                 "domain": f'{self.host}api/v2.0/indexers/{v["id"]}/results/torznab/',
+                                 "domain": f'{self._host}api/v2.0/indexers/{v["id"]}/results/torznab/',
                                  "public": True if v['type'] == 'public' else False,
                                  "builtin": False})
                     for v in ret.json()]
